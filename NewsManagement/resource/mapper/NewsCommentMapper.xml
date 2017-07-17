@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hc.yuwen.dao.NewsCommentMapper">
+	<resultMap id="BaseResultMap" type="com.hc.yuwen.entities.NewsComment">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="newsid" property="newsid" jdbcType="INTEGER" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="author" property="author" jdbcType="VARCHAR" />
+		<result column="createdate" property="createdate" jdbcType="DATE" />
+	</resultMap>
+	
+	
+	
+	<delete id="deleteComment">
+		delete from news_comment where news_comment.newsid = #{id}
+	</delete>
+	
+	
+	<select id="selectCommentByPrimaryKey" resultMap="BaseResultMap">
+		select * from news_comment c,news_detail d where c.newsid = d.id and d.id=#{id};
+	</select>
+	
+	
+	
+	
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		id, newsid, content, author, createdate
+	</sql>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.hc.yuwen.entities.NewsCommentExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from news_comment
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from news_comment
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from news_comment
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByExample" parameterType="com.hc.yuwen.entities.NewsCommentExample">
+		delete from news_comment
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.hc.yuwen.entities.NewsComment">
+		insert into news_comment (id, newsid, content,
+		author, createdate)
+		values (#{id,jdbcType=INTEGER}, #{newsid,jdbcType=INTEGER},
+		#{content,jdbcType=VARCHAR},
+		#{author,jdbcType=VARCHAR}, #{createdate,jdbcType=DATE})
+	</insert>
+	<insert id="insertSelective" parameterType="com.hc.yuwen.entities.NewsComment">
+		insert into news_comment
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="newsid != null">
+				newsid,
+			</if>
+			<if test="content != null">
+				content,
+			</if>
+			<if test="author != null">
+				author,
+			</if>
+			<if test="createdate != null">
+				createdate,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="newsid != null">
+				#{newsid,jdbcType=INTEGER},
+			</if>
+			<if test="content != null">
+				#{content,jdbcType=VARCHAR},
+			</if>
+			<if test="author != null">
+				#{author,jdbcType=VARCHAR},
+			</if>
+			<if test="createdate != null">
+				#{createdate,jdbcType=DATE},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample" parameterType="com.hc.yuwen.entities.NewsCommentExample"
+		resultType="java.lang.Integer">
+		select count(*) from news_comment
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update news_comment
+		<set>
+			<if test="record.id != null">
+				id = #{record.id,jdbcType=INTEGER},
+			</if>
+			<if test="record.newsid != null">
+				newsid = #{record.newsid,jdbcType=INTEGER},
+			</if>
+			<if test="record.content != null">
+				content = #{record.content,jdbcType=VARCHAR},
+			</if>
+			<if test="record.author != null">
+				author = #{record.author,jdbcType=VARCHAR},
+			</if>
+			<if test="record.createdate != null">
+				createdate = #{record.createdate,jdbcType=DATE},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update news_comment
+		set id = #{record.id,jdbcType=INTEGER},
+		newsid = #{record.newsid,jdbcType=INTEGER},
+		content = #{record.content,jdbcType=VARCHAR},
+		author = #{record.author,jdbcType=VARCHAR},
+		createdate = #{record.createdate,jdbcType=DATE}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.hc.yuwen.entities.NewsComment">
+		update news_comment
+		<set>
+			<if test="newsid != null">
+				newsid = #{newsid,jdbcType=INTEGER},
+			</if>
+			<if test="content != null">
+				content = #{content,jdbcType=VARCHAR},
+			</if>
+			<if test="author != null">
+				author = #{author,jdbcType=VARCHAR},
+			</if>
+			<if test="createdate != null">
+				createdate = #{createdate,jdbcType=DATE},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.hc.yuwen.entities.NewsComment">
+		update news_comment
+		set newsid = #{newsid,jdbcType=INTEGER},
+		content = #{content,jdbcType=VARCHAR},
+		author = #{author,jdbcType=VARCHAR},
+		createdate = #{createdate,jdbcType=DATE}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>
